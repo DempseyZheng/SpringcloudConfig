@@ -1,0 +1,248 @@
+#自动选择中国源
+sudo pacman-mirrors -c China
+sudo pacman -Syyu
+#添加archlinuxcn源
+/etc/pacman.conf
+
+#安装软件时，提示PGP签名损坏
+sudo pacman -S archlinuxcn-keyring
+
+
+#安装
+aur源:sudo pacman -S yay
+##安装zsh && oh-my-zsh:
+zsh:
+    安装zsh: sudo pacman -S zsh
+    使用zsh替换bash 重启系统生效: chsh -s /bin/zsh
+    安装oh-my-zsh: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    安装 powerline及字体: 
+         1:sudo pacman -S powerline
+         2:sudo pacman -S powerline-fonts
+    修改 .zshrc文件配置主题: /home/dempsey/.zshrc
+
+##安装配置Git
+git:
+    安装: sudo pacman -S git
+    设置用户名: git config --global user.name "dempseyZheng" 
+    设置邮箱: git config --global user.email "dempseyZheng@yeah.net" 
+##安装谷歌浏览器
+sudo pacman -S google-chrome
+
+##安装搜狗输入法
+sudo pacman -S fcitx-sogoupinyin
+sudo pacman -S fcitx-im
+sudo pacman -S fcitx-configtool
+
+libpinyin输入法:
+    sudo pacman -S fcitx
+  sudo pacman -S  fcitx-libpinyin
+#微信
+sudo pacman -S electronic-wechat
+
+#aria2
+aria2:
+    安装: sudo pacman -S aria2
+    配置:
+        1: sudo mkdir /etc/aria2
+        2:sudo touch /etc/aria2/aria2.session
+        3:sudo chmod 777 /etc/aria2/aria2.session
+        4:sudo cp /mnt/wd/backup/aria2.conf /etc/aria2/aria2.conf
+    启动: sudo aria2c --conf-path=/etc/aria2/aria2.conf
+    插件:下载chrome插件BaiduExporter
+#安装react
+react:sudo pacman -S nodejs
+    sudo pacman -S npm
+    npm install -g cnpm --registry=https://registry.npm.taobao.org
+    npm config set registry https://registry.npm.taobao.org
+    cnpm install -g create-react-app
+
+##安装深度截图
+sudo pacman -S deepin-screenshot
+
+##安装wps和缺失字体
+sudo pacman -S wps-office
+sudo pacman -S ttf-wps-fonts
+
+##安装vituralbox
+vb:
+    1:sudo pacman -S virtualbox
+    2:sudo vboxreload
+    3:分配光驱 VBoxGuestAdditions_6.0.4.iso 手动安装GuestAdditions
+##安装搜索软件
+sudo pacman -S angrysearch
+
+DBeaver:
+    sudo pacman -S  DBeaver
+##搭建react native android
+rn:
+    1:sudo pacman -S nodejs
+    2:sudo pacman -S npm
+    3:npm install -g yarn react-native-cli
+    4:yarn config set registry https://registry.npm.taobao.org --global
+    5:yarn config set disturl https://npm.taobao.org/dist --global
+##搭建php环境
+php:
+    安装mariadb: sudo pacman -S mariadb
+    初始化: sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+    设置密码: mysql -u root -p
+    启动mysql服务: sudo systemctl start mysqld.service
+    启动 mariadb 守护进程: sudo systemctl start mariadb
+    运行安装脚本: sudo mysql_secure_installation
+    然后重新启动守护进程: sudo systemctl restart mariadb
+    安装apache: sudo pacman -S apache
+    安装php和Apache模块: sudo pacman -S php php-apache
+    安装fpm: sudo pacman -S php-fpm
+    服务器根目录: /srv/http/test.php
+    安装composer: sudo pacman -S composer
+    thinkPHP:
+        设置镜像:
+            composer config -g repo.packagist composer https://packagist.laravel-china.org
+            composer config -g repo.packagist composer https://packagist.phpcomposer.com
+        创建项目:  composer create-project topthink/think tp
+        启动: php think run
+
+    配置文件:
+        apache: /etc/httpd/conf/httpd.conf
+                LoadModule proxy_module modules/mod_proxy.so
+                LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
+                Include conf/extra/php-fpm.conf
+        fpm: /etc/httpd/conf/extra/php-fpm.conf
+                DirectoryIndex index.php index.html
+                <FilesMatch \.php$>
+                SetHandler "proxy:unix:/run/php-fpm/php-fpm.sock|fcgi://localhost/"
+                </FilesMatch>
+        php: /etc/php/php.ini
+            date.timezone = Asia/Shanghai
+            extension=pdo_mysql.so
+            extension=mysqli.so
+        xdebug: /etc/php/conf.d/xdebug.ini
+            zend_extension=xdebug.so
+            xdebug.remote_enable=on
+            xdebug.remote_host=127.0.0.1
+            xdebug.remote_port=9000
+            xdebug.remote_handler=dbgp
+启动服务命令:
+    httpd: 
+        sudo systemctl start httpd.service
+    fpm:
+        sudo systemctl start php-fpm.service
+    mysql: 
+        sudo systemctl start mysqld.service
+重启服务命令: 
+    httpd: sudo systemctl restart httpd.service
+
+phpmyadmin:
+     sudo pacman -S phpmyadmin
+    配置文件:
+        /etc/httpd/conf/extra/phpmyadmin.conf 
+        /etc/webapps/phpmyadmin/config.inc.php
+        
+apache设置项目目录:
+    Alias /accvWeb "/mnt/wd/accv/accvWeb/public"
+<Directory "/mnt/wd/accv/accvWeb/public">
+    DirectoryIndex index.php
+    AllowOverride All
+    Options FollowSymlinks
+    Require all granted
+</Directory>
+
+#开机自启
+sudo systemctl enable httpd
+sudo systemctl enable php-fpm
+sudo systemctl enable mysqld
+ 
+#拷贝命令
+sudo cp /etc/httpd/conf/httpd.conf /mnt/wd/backup
+sudo cp /etc/httpd/conf/extra/php-fpm.conf /mnt/wd/backup 
+sudo cp /etc/php/php.ini  /mnt/wd/backup
+sudo cp /etc/php/conf.d/xdebug.ini  /mnt/wd/backup
+sudo cp  /etc/httpd/conf/extra/phpmyadmin.conf  /mnt/wd/backup
+
+
+#开机自启目录
+/home/dempsey/.config/autostart/
+
+#开机挂载配置文件
+/etc/fstab
+
+#easystroke配置文件
+/home/dempsey/.easystroke/actions-0.5.6
+
+#.zshrc (.bashrc) 环境变量
+JAVA_HOME=/mnt/wd/jdk1.8.0_201/
+GRADLE_HOME=/mnt/wd/gradle/gradle-4.6-all/gradle-4.6/
+ANDROID_HOME=/mnt/wd/download/sdk/
+CLASSPATH=$JAVA_HOME/lib/tools.jar
+PATH=$JAVA_HOME/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GRADLE_HOME/bin:$PATH
+
+
+
+#sudo免密码
+/etc/sudoers
+
+#webstrom hosts
+0.0.0.0 account.jetbrains.com
+
+#字体
+sudo cp /mnt/wd/download/Consolas.ttf /usr/share/fonts
+sudo fc-cache -f       
+
+#快捷方式
+sudo medit /usr/share/applications/微信开发者工具.desktop
+
+[Desktop Entry]
+Name=微信web开发者工具
+Comment=The development tools for wechat web develop
+Categories=Development;WebDevelopment;IDE;
+Exec=/path/to/bin/wxdt %U
+Icon=/path/to/dist/package.nw/static/image/logo@2x.png
+Type=Application
+Terminal=false
+X-Desktop-File-Install-Version=0.22
+
+mpt数据库:
+    ip: 120.27.234.42
+    端口: 5000
+    账号: user_db
+    密码: accv#DB07_ISO
+
+sublime:    
+  配置文件: /home/dempsey/.config/sublime-text-3/Packages/User/
+    注册码: sgbteam
+Single User License
+EA7E-1153259
+8891CBB9 F1513E4F 1A3405C1 A865D53F
+115F202E 7B91AB2D 0D2A40ED 352B269B
+76E84F0B CD69BFC7 59F2DFEF E267328F
+215652A3 E88F9D8F 4C38E3BA 5B2DAAE4
+969624E7 DC9CD4D5 717FB40C 1B9738CF
+20B3C4F1 E917B5B3 87C38D9C ACCE7DD8
+5F7EF854 86B9743C FADC04AA FB0DA5C0
+F913BE58 42FEA319 F954EFDD AE881E0B
+
+
+
+地址:
+    浙江省温州市苍南县灵溪镇金福村27号
+
+accv_ecoupon@1022151920419556.onaliyun.com
+
+id:
+    LTAIvIpEhT1amjmQ
+secret:
+    MxrHd910oGRZpNvDhBEusjfQuKzeej    
+
+natapp:
+  php /mnt/wd/natapp.php --authtoken=
+
+mongo管理:
+    cd /mnt/wd/download/adminMongo-master/routes
+    nom start
+
+mongo:
+    sudo mongod --dbpath=/mnt/wd/download/mongodb4.0.6/db --logpath=/mnt/wd/download/mongodb4.0.6/log/mongodb.log  --fork --auth
+    sudo mongod -shutdown --dbpath=/mnt/wd/download/mongodb4.0.6/db
+
+
+
+  
