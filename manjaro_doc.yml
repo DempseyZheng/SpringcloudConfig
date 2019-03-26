@@ -28,11 +28,14 @@ git:
 ##安装谷歌浏览器
 sudo pacman -S google-chrome
 
-##安装搜狗输入法
+搜狗输入法:
+    安装:
 sudo pacman -S fcitx-sogoupinyin
 sudo pacman -S fcitx-im
 sudo pacman -S fcitx-configtool
-
+    配置:
+        /home/dempsey/.config/SogouPY/phrase/PhraseEdit.txt
+        
 libpinyin输入法:
     sudo pacman -S fcitx
   sudo pacman -S  fcitx-libpinyin
@@ -63,6 +66,15 @@ sudo pacman -S deepin-screenshot
 sudo pacman -S wps-office
 sudo pacman -S ttf-wps-fonts
 
+网易云音乐:
+    sudo pacman -S netease-cloud-music 
+    
+微信:
+     yay -S deepin-wine-wechat    
+    输入不了中文: /opt/deepinwine/apps/Deepin-WeChat/run.sh
+export XMODIFIERS="@im=fcitx"
+export GTK_IM_MODULE="fcitx"
+export QT_IM_MODULE="fcitx"
 ##安装vituralbox
 vb:
     1:sudo pacman -S virtualbox
@@ -70,6 +82,12 @@ vb:
     3:分配光驱 VBoxGuestAdditions_6.0.4.iso 手动安装GuestAdditions
 ##安装搜索软件
 sudo pacman -S angrysearch
+
+微信公众平台:
+   小程序:
+    zendelar@126.com
+    公众号:
+        sadasdzdl@163.com
 
 DBeaver:
     sudo pacman -S  DBeaver
@@ -157,6 +175,7 @@ sudo cp /etc/httpd/conf/extra/php-fpm.conf /mnt/wd/backup
 sudo cp /etc/php/php.ini  /mnt/wd/backup
 sudo cp /etc/php/conf.d/xdebug.ini  /mnt/wd/backup
 sudo cp  /etc/httpd/conf/extra/phpmyadmin.conf  /mnt/wd/backup
+sudo cp /etc/mysql/my.cnf  /mnt/wd/backup
 
 
 #开机自启目录
@@ -185,8 +204,12 @@ PATH=$JAVA_HOME/bin:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$GRADLE_HOM
 
 #字体
 sudo cp /mnt/wd/download/Consolas.ttf /usr/share/fonts
-sudo fc-cache -f       
+  emoji:
+sudo pacman -S noto-fonts-cjk noto-fonts-emoji
 
+fc-cache -fv    
+fc-cache --force --verbose
+fc-cache-32 --force --verbose
 #快捷方式
 sudo medit /usr/share/applications/微信开发者工具.desktop
 
@@ -233,16 +256,52 @@ secret:
     MxrHd910oGRZpNvDhBEusjfQuKzeej    
 
 natapp:
-  php /mnt/wd/natapp.php --authtoken=
+    '/mnt/wd/download/natapp' -authtoken=e78ae79e4e894269
+  php /mnt/wd/download/natapp.php --authtoken=e78ae79e4e894269
 
 mongo管理:
     cd /mnt/wd/download/adminMongo-master/routes
-    nom start
+    npm start
+    mongodb://127.0.0.1
 
 mongo:
+    安装php扩展:
+        composer require mongodb/mongodb
     sudo mongod --dbpath=/mnt/wd/download/mongodb4.0.6/db --logpath=/mnt/wd/download/mongodb4.0.6/log/mongodb.log  --fork --auth
     sudo mongod -shutdown --dbpath=/mnt/wd/download/mongodb4.0.6/db
+    db.auth("admin", "123456")
+    db.auth('root','123456')
 
+小键盘:
+~/.config/xfce4/xfconf/xfce-perchannel-xml/keyboards.xml
+<property name="Numlock" type="bool" value="true"/>
+<property name="RestoreNumlock" type="bool" value="true"/>
 
+redis:
+            sudo pacman -S redis
+            sudo systemctl enable redis.service
+            sudo systemctl start redis.service
+            yay -S phpredis-git 
+            yay -S redis-desktop-manager
+laravel:
+  composer global require laravel/installer
+    新建项目:
+      laravel new
+        composer create-project laravel/laravel $ --prefer-dist
+        镜像:
+          composer config -g repo.packagist composer https://packagist.phpcomposer.com
+          composer config -g repo.packagist composer https://packagist.org
+    redis:
+        
 
-  
+    composer:
+    忽略版本匹配:
+        composer install --ignore-platform-reqs
+        composer update --ignore-platform-reqs
+    workerman:
+        1.生成 WorkermanCommand 文件:
+        php artisan make:command WorkermanCommand
+        2.创建 WorkermanHandler.php:
+        3.启动:
+        php artisan wk start
+
