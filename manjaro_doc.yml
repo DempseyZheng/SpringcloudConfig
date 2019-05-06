@@ -37,8 +37,7 @@ sudo pacman -S fcitx-configtool
         /home/dempsey/.config/SogouPY/phrase/PhraseEdit.txt
         
 libpinyin输入法:
-    sudo pacman -S fcitx
-  sudo pacman -S  fcitx-libpinyin
+    sudo pacman -S fcitx-im fcitx-configtool  fcitx-libpinyin
 #微信
 sudo pacman -S electronic-wechat
 
@@ -283,7 +282,9 @@ redis:
             sudo systemctl start redis.service
             yay -S phpredis-git 
             yay -S redis-desktop-manager
-laravel:
+
+php框架:
+  laravel:
   composer global require laravel/installer
     新建项目:
       laravel new
@@ -291,10 +292,19 @@ laravel:
         镜像:
           composer config -g repo.packagist composer https://packagist.phpcomposer.com
           composer config -g repo.packagist composer https://packagist.org
-    redis:
+    yii2:
+      crud:
+        app\models\Arrange
+        app\models\ArrangeSearch
+        app\controllers\ArrangeController
+        @app\views\arrange
+        新建项目:
+          composer create-project --prefer-dist yiisoft/yii2-app-basic admin
         
 
-    composer:
+composer:
+  日期选择器:
+    composer require bower-asset/smalot-bootstrap-datetimepicker
     忽略版本匹配:
         composer install --ignore-platform-reqs
         composer update --ignore-platform-reqs
@@ -304,4 +314,13 @@ laravel:
         2.创建 WorkermanHandler.php:
         3.启动:
         php artisan wk start
+        ./yii workman -s start
 
+phpstorm:
+    xdebug:
+        DBGP Proxy:
+            IDE key: PHPSTORM
+            Host: 127.0.0.1
+            Port: 9000
+        Servers:
+            Host:  127.0.0.1   
