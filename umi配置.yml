@@ -1,0 +1,14 @@
+mysql:
+  ip: x.huaxinzhihe.com
+  账号: wx_b_bakop_cn
+  密码: h7Tnh8ma72
+
+ftp:
+  host: x.huaxinzhihe.com
+  用户名: wx_b_bakop_cn
+  密码: QFFJKtBAYJ
+set @@sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+
+公众号:
+  账户: zuihuigou8008
+  密码: sibente2015
